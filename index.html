@@ -4,11 +4,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/vue-resource/1.0.3/vue-resource.js"></script>
     <head>
         <link href="css/app.css" rel="stylesheet" crossorigin="anonymous">
+        <title>System Users</title>
     </head>
     <body>
         <div id="pager" class="generic-container">
+            <b>System Users</b>
             <div class="section">
-                <p><b>List of Users</b></p>
+                <input id="filterUsers" class="filter" type="text" @keyup="searchItems(10,1)" v-model.trim="filter"/>
+            </div>
+            <div class="section fixed-height">
                 <table >
                     <tr>
                         <th>ID</th>
@@ -29,9 +33,9 @@
                 </table>
             </div>
             <div class="section">
-                <button id="prev" v-bind:disabled="!hasPrevious" value="Prev" v-on:click="getItems(10,previousPageNumber)">Prev</button>
+                <button id="prev" v-bind:disabled="!hasPrevious" value="Prev" v-on:click="searchItems(10,previousPageNumber)">Prev</button>
                 <!-- for total pages - show link as numbered count-->
-                <button id="next" v-bind:disabled="!hasNext" value="Next" v-on:click="getItems(10,nextPageNumber)">Next</button>
+                <button id="next" v-bind:disabled="!hasNext" value="Next" v-on:click="searchItems(10,nextPageNumber)">Next</button>
             </div>
         </div>
     </body>
