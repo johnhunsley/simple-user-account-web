@@ -21,6 +21,7 @@ new Vue({
                     this.calculatePage(data, pageNumber);
                 });
         },
+
         searchItems: function(pageSize, pageNumber) {
             this.$http.get('http://localhost:8080/user/search/'+pageSize+"/"+pageNumber+"?query="+this.filter)
                 .then(function(data){

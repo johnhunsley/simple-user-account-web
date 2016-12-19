@@ -33,9 +33,12 @@
                 </table>
             </div>
             <div class="section">
-                <button id="prev" v-bind:disabled="!hasPrevious" value="Prev" v-on:click="searchItems(10,previousPageNumber)">Prev</button>
-                <!-- for total pages - show link as numbered count-->
-                <button id="next" v-bind:disabled="!hasNext" value="Next" v-on:click="searchItems(10,nextPageNumber)">Next</button>
+                <button id="prev" v-bind:disabled="!hasPrevious" value="Prev" @click="searchItems(10,previousPageNumber)">Prev</button>
+                <span v-for="n in totalPages">
+                    &nbsp;&nbsp;<span @click="searchItems(10,n)"><b>{{n}}</b></span>
+                </span>
+                <button id="next" v-bind:disabled="!hasNext" value="Next" @click="searchItems(10,nextPageNumber)">Next</button>
+                <button style="float: right" id="new" value="New" @click="">New</button>
             </div>
         </div>
     </body>
