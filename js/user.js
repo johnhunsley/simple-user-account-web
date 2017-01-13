@@ -2,6 +2,7 @@
 new Vue({
     el:'#pager',
     data:{
+        showModal: false,
         items: [],
         totalPages: 0,
         totalItems: 0,
@@ -9,12 +10,19 @@ new Vue({
         hasNext:true,
         previousPageNumber: 1,
         hasPrevious: false,
-        filter:""
+        filter:"",
+        username: 'johnhunsley',
+        password: 'password',
+        token: ''
     },
     mounted: function() {
         this.searchItems(10,1);
     },
     methods:{
+        addUser: function() {
+
+        },
+
         getItems: function(pageSize, pageNumber) {
             this.$http.get('http://localhost:8080/user/page/'+pageSize+"/"+pageNumber)
                 .then(function(data){
@@ -22,8 +30,23 @@ new Vue({
                 });
         },
 
+        authenticate: function(username, password) {
+            this.$http.post('http://localhost:8080/auth/login',
+                {'username': username, 'password': password},
+                {headers: {'X-Requested-With':'XMLHttpRequest', 'Content-Type':'application/json', 'Cache-Control':'no-cache'}})
+                .then(function(data) {
+                    //if good set the token on the auth object
+                    this.token = data.body.token;
+                    console.log(this.token);
+                });
+        },
+
         searchItems: function(pageSize, pageNumber) {
-            this.$http.get('http://localhost:8080/user/search/'+pageSize+"/"+pageNumber+"?query="+this.filter)
+            if(this.token.length < 1) {
+                this.authenticate(this.username, this.password);
+            }
+            this.$http.get('http://localhost:8080/user/search/'+pageSize+"/"+pageNumber+"?query="+this.filter,
+                {headers:{'Cache-Control':'no-cache', 'X-Authorization':'Bearer '+this.token}})
                 .then(function(data){
                     this.calculatePage(data, pageNumber);
                 });
